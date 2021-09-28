@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cocktail_app/cocktail_details.dart';
+import 'package:cocktail_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:http/http.dart' as http;
@@ -33,42 +34,50 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.orange,
-      appBar: AppBar(
-        title: 'Cocktail App'.text.white.makeCentered(),
-        elevation: 0.0,
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [MyApp.myColor, Colors.orange],
+        ),
       ),
-      body: Center(
-        child: response != null
-            ? ListView.builder(
-                itemCount: drinks.length,
-                itemBuilder: (context, index) {
-                  var drink = drinks[index];
-                  return ListTile(
-                    leading: Hero(
-                      tag: drink['idDrink'],
-                      child: CircleAvatar(
-                        backgroundImage: NetworkImage(
-                          drink['strDrinkThumb'],
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: 'Cocktail App'.text.white.makeCentered(),
+          elevation: 0.0,
+          backgroundColor: Colors.transparent,
+        ),
+        body: Center(
+          child: response != null
+              ? ListView.builder(
+                  itemCount: drinks.length,
+                  itemBuilder: (context, index) {
+                    var drink = drinks[index];
+                    return ListTile(
+                      leading: Hero(
+                        tag: drink['idDrink'],
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(
+                            drink['strDrinkThumb'],
+                          ),
                         ),
                       ),
-                    ),
-                    title: '${drink['strDrink']}'.text.white.xl.bold.make(),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CocktailDetails(drink: drink),
-                        ),
-                      );
-                    },
-                  );
-                },
-              )
-            : const CircularProgressIndicator(
-                color: Colors.white,
-              ),
+                      title: '${drink['strDrink']}'.text.white.xl.bold.make(),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CocktailDetails(drink: drink),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                )
+              : const CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+        ),
       ),
     );
   }
